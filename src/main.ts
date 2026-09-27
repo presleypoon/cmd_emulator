@@ -96,8 +96,9 @@ function cls(args: string[]): void {
 }
 
 function mkdir(command: string, op: string): void {
-	let arg: string = get_md_args(command, op);
-	let args: string[] = parse_md_args(arg);
+	let args: string = get_md_args(command, op);
+	let new_dir: string[] = parse_md_args(args);
+	console.log(new_dir);
 }
 
 function get_md_args(command: string, op: string): string {
@@ -109,8 +110,62 @@ function get_md_args(command: string, op: string): string {
 	else throw new Error("Unreachable, only have 2 input but both are covered");
 }
 
-function parse_md_args(arg: string): string[] {
-	throw new Error("To do");
+function parse_md_args(args: string): string[] {
+	let ret: string[] = [];
+	let this_str: string = "";
+	type STR_T = "'" | '"' | undefined;
+	let str_t: STR_T = undefined;
+	
+	for (let i: number = 0; i < args.length; i++) {
+		let char: string = args[i];
+		switch (char) {
+			case '"': {
+				switch (str_t) {
+					case undefined: {
+						str_t = '"';
+						break;
+					}
+					case '"': {
+						str_t = undefined;
+						break;
+					}
+					default: break;
+				}
+				break;
+			}
+			case "'": {
+				switch (str_t) {
+					case undefined: {
+						str_t = "'";
+						break;
+					}
+					case "'": {
+						str_t = undefined;
+						break;
+					}
+					default: break;
+				}
+				break;
+			}
+			case " ": {
+				if (str_t === undefined) {
+					if (this_str.length === 0) break;
+					ret.push(this_str);
+					this_str = "";
+					break;
+				}
+				// No break for if it is in a quote
+			}
+			default: {
+				this_str += char;
+				break;
+			}
+		}
+	}
+	
+	if (this_str.length === 0) return ret;
+	ret.push(this_str);
+	return ret;
 }
 
 function update(): void {
