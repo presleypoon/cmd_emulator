@@ -123,7 +123,7 @@ function get_md_args(command, op) {
 	// trimmed_command
 	let tmd_cmd = command.trimStart();
 	
-	if (op === "md" && tmd_cmd.startsWith("md")) return tmd_slice.slice(2).trimStart();
+	if (op === "md" && tmd_cmd.startsWith("md")) return tmd_cmd.slice(2).trimStart();
 	else if (op === "mkdir" && tmd_cmd.startsWith("mkdir")) return tmd_cmd.slice(5).trimStart();
 	else throw new Error("Unreachable, only have 2 inputs and both are covered");
 }
