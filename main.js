@@ -92,7 +92,7 @@ function run_command() {
 
 function cls(args) {
 	if (args.length > 1) {
-		history += "This command only has 0 or 1 arguments);
+		history += "This command only has 0 or 1 arguments)";
 		return;
 	}
 	
