@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "C:\\";
+let history = "CMD Emulator [Version 0.0.0]\n(c) Presley Poon. All rights reserved.\n\nC:\\";
 
 window.addEventListener('keydown', std);
 function std(e) {
@@ -113,6 +113,10 @@ function cls(args) {
 function mkdir(command, op) {
 	let args = get_md_args(command, op);
 	let new_dir = parse_md_args(args);
+	if (new_dir[0] === "/?") {
+		history += "Creates a directory.\n\nMKDIR [drive:]path\nMD [drive:]path\n\nIf Command Extensions are enabled MKDIR changes as follows:\n\nMKDIR creates any intermediate directories in the path, if needed.\nFor example, assume \\a does not exist then:\n\n\tmkdir \\a\\b\\c\\d\n\nis the same as:\n\n\tmkdir \\a\n\tchdir\\a\n\tmkdir b\n\tchdir b\n\tmkdir c\n\tchdir c\n\tmkdir d\n\tchdir ..\\..\\..\n\nwhich is what you would have to type if extensions were disabled.";
+		return;
+	}
 	for (let i = 0; i < new_dir.length; i++) {
 		contents.mk(new_dir[i], new File(new Map()));
 	}

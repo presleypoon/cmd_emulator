@@ -9,3 +9,6 @@ This is designed for web browsers, hence the choice for web stack; this is becau
 
 Please report all bugs that is not listed in here, report it in GitHub, [link](https://github.com/presleypoon/cmd_emulator.git).
 
+## Discrepancy
+
+* Added `\n\tchdir ..\\..\\..` into the `mkdir` or `md`'s `/?` param, because MS forgot to add it, this problem is addressed to MS already as well
