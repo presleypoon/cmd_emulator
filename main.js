@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "CMD Emulator [Version 0.2pr2]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
+let history = "CMD Emulator [Version 0.2pr3]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
 
 window.addEventListener('keydown', key_list);
 function key_list(e) {
