@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "CMD Emulator [Version 0.0.0]\n(c) Presley Poon. All rights reserved.\n\nC:\\";
+let history = "CMD Emulator [Version 0.2.0]\n(c) Presley Poon. All rights reserved.\n\nC:\\";
 
 window.addEventListener('keydown', std);
 function std(e) {
