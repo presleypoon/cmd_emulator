@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "CMD Emulator [Version 0.2.0]\n(c) Presley Poon. All rights reserved.\n\nC:\\";
+let history = "CMD Emulator [Version 0.2pr2]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
 
 window.addEventListener('keydown', std);
 function std(e) {
@@ -36,6 +36,7 @@ function std(e) {
 
 class File {
 	constructor(content) {
+		// content: string | Map<string, File>
 		this.content = content;
 	}
 	
@@ -54,6 +55,17 @@ class File {
 	get(name) {
 		if (typeof this.content === "string") throw new Error(`${name} is a string, not a File`);
 		return this.content.get(name);
+	}
+	
+	get_file(dir) {
+		let files = dir.split("\\");
+		let local = contents;
+		for (let i = 0; i < files.length; i++) {
+			let file = files[i];
+			let local = local.get(file);
+			if (local === undefined) return undefined;
+		}
+		return local;
 	}
 }
 let contents = new File(new Map());
@@ -117,9 +129,7 @@ function mkdir(command, op) {
 		history += "Creates a directory.\n\nMKDIR [drive:]path\nMD [drive:]path\n\nIf Command Extensions are enabled MKDIR changes as follows:\n\nMKDIR creates any intermediate directories in the path, if needed.\nFor example, assume \\a does not exist then:\n\n\tmkdir \\a\\b\\c\\d\n\nis the same as:\n\n\tmkdir \\a\n\tchdir\\a\n\tmkdir b\n\tchdir b\n\tmkdir c\n\tchdir c\n\tmkdir d\n\tchdir ..\\..\\..\n\nwhich is what you would have to type if extensions were disabled.";
 		return;
 	}
-	for (let i = 0; i < new_dir.length; i++) {
-		contents.mk(new_dir[i], new File(new Map()));
-	}
+	mk_md_folders(new_dir);
 	console.log(contents);
 }
 
@@ -186,6 +196,22 @@ function parse_md_args(args) {
 	if (this_str.length === 0) return ret;
 	ret.push(this_str);
 	return ret;
+}
+
+function mk_md_folders(new_dir) {
+	let local = contents.get_dir(dir);
+	for (let i = 0; i < new_dir.length; i++) {
+		let bs_local = local;
+		if (new_dir[i].includes("\\")) {
+			let files = new_dir[i].split("\\");
+			for (let j = 0; j < files.length; j++) {
+				let file = files[j];
+				let this_local = bs_local.get(file);
+				if (this_local === undefined) bs_local.set(file, new File(new Map()));
+				bs_local = bs_local.get(file);
+			}
+		} else local.mk(new_dir[i], new File(new Map()));
+	}
 }
 
 function update() {
