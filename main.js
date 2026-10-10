@@ -57,7 +57,7 @@ class File {
 		return this.content.get(name);
 	}
 	
-	get_file(dir) {
+	get_dir(dir) {
 		let files = dir.split("\\");
 		let local = contents;
 		for (let i = 0; i < files.length; i++) {
