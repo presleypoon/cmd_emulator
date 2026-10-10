@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "CMD Emulator [Version 0.2pr3]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
+let history = "CMD Emulator [Version 0.2.0]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
 
 window.addEventListener('keydown', key_list);
 function key_list(e) {
@@ -42,6 +42,7 @@ class File {
 	
 	mk(name, item) {
 		if (typeof this.content === "string") throw new Error(`${name} is a string, not a File`);
+		if (this.content.get(name) !== undefined) throw new Error(`mk don't allow rewriting and ${name} already exist`);
 		this.content.set(name, item);
 	}
 	
@@ -208,6 +209,7 @@ function mk_md_folders(new_dir) {
 			for (let j = 0; j < files.length; j++) {
 				let file = files[j];
 				let this_local = bs_local.get(file);
+				if (j === 0 && file === "") this_local = contents;
 				if (this_local === undefined) bs_local.mk(file, new File(new Map()));
 				bs_local = bs_local.get(file);
 			}
