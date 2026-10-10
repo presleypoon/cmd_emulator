@@ -3,8 +3,8 @@ let dir = "";
 let command = "";
 let history = "CMD Emulator [Version 0.2pr2]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
 
-window.addEventListener('keydown', std);
-function std(e) {
+window.addEventListener('keydown', key_list);
+function key_list(e) {
 	switch (e.key) {
 		case "Backspace": {
 			e.preventDefault();
@@ -16,9 +16,9 @@ function std(e) {
 				e.preventDefault();
 				run_command();
 			} catch (err) {
-				history += err.stack;
+				history += `${err.stack}\ndir: ${dir}`
 				TERMINAL.value = history;
-				window.removeEventListener('keydown', std);
+				window.removeEventListener('keydown', key_list);
 				throw err;
 			}
 			break;
@@ -58,11 +58,12 @@ class File {
 	}
 	
 	get_dir(dir) {
+		if (dir === "") return contents;
 		let files = dir.split("\\");
 		let local = contents;
 		for (let i = 0; i < files.length; i++) {
 			let file = files[i];
-			let local = local.get(file);
+			local = local.get(file);
 			if (local === undefined) return undefined;
 		}
 		return local;
@@ -207,7 +208,7 @@ function mk_md_folders(new_dir) {
 			for (let j = 0; j < files.length; j++) {
 				let file = files[j];
 				let this_local = bs_local.get(file);
-				if (this_local === undefined) bs_local.set(file, new File(new Map()));
+				if (this_local === undefined) bs_local.mk(file, new File(new Map()));
 				bs_local = bs_local.get(file);
 			}
 		} else local.mk(new_dir[i], new File(new Map()));
