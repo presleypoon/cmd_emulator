@@ -1,7 +1,7 @@
 const TERMINAL = document.getElementById("terminal");
 let dir = "";
 let command = "";
-let history = "CMD Emulator [Version 0.3pr1]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
+let history = "CMD Emulator [Version 0.3.0]\n(c) Presley Poon. All rights reserved.\nIf this is an old version, ctrl + f5 (or cmd + shift + r) it\n\nC:\\";
 
 window.addEventListener('keydown', key_list);
 function key_list(e) {
@@ -231,12 +231,17 @@ function run_cd(cd_dir) {
 		} else if (this_dir === "..") {
 			local = find_parent(local_dir);
 			local_dir = find_parent_dir(local_dir);
-		} else if (local === undefined) {
-			history += `This directory: ${this_dir} don't exist`;
-			return;
 		} else {
+			if (typeof local.content === "string") {
+				history += "This directory name is invalid."
+				return;
+			}
 			local = local.get(this_dir);
 			local_dir += `${this_dir}\\`;
+		}
+		if (local === undefined) {
+			history += "The system cannot find the path specified";
+			return;
 		}
 	}
 	dir = local_dir;
